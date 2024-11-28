@@ -13,10 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCoordinates = getCoordinates;
+exports.generateStaticMapUrl = generateStaticMapUrl;
 const axios_1 = __importDefault(require("axios"));
 function getCoordinates(address) {
     return __awaiter(this, void 0, void 0, function* () {
-        const API_KEY = process.env.GOOGLE_API_KEY;
+        console.log('apiKey: ', process.env.GOOGLE_API_KEY);
+        const API_KEY = 'AIzaSyDUEPfeTCpCYjgnUAEtxoInQBuMijED2ug';
         const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${API_KEY}`;
         try {
             const response = yield axios_1.default.get(url);
@@ -34,5 +36,14 @@ function getCoordinates(address) {
             console.error('Error fetching geocoding data:', error);
             return null;
         }
+    });
+}
+function generateStaticMapUrl(origin, destination) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const baseUrl = "https://maps.googleapis.com/maps/api/staticmap";
+        const size = "600x300";
+        const markers = `markers=color:blue|label:A|${origin.lat},${origin.lng}&markers=color:red|label:B|${destination.lat},${destination.lng}`;
+        const path = `path=color:0x0000ff|weight:5|${origin.lat},${origin.lng}|${destination.lat},${destination.lng}`;
+        return `${baseUrl}?size=${size}&${markers}&${path}&key=${process.env.GOOGLE_API_KEY}`;
     });
 }

@@ -7,7 +7,7 @@ class TravelRouter {
     constructor() {
         this.router = (0, express_1.Router)();
         this.router.patch('/ride/confirm', new travel_1.CreateTravelController().createTravel);
-        this.router.get('/ride', new travel_1.ListTravelsByCustomerIDController().listTravelsByCustomerID);
+        this.router.get('/ride/:customerID', new travel_1.ListTravelsByCustomerIDController().listTravelsByCustomerID);
     }
     getRouter() {
         return this.router;

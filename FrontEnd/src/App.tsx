@@ -59,10 +59,7 @@ function App() {
           setDistanceMeters(estimate.calculateRide.distanceMeters)
           setDuration(estimate.calculateRide.duration)
           setEncodedPolyline(estimate.routeResponse.polyline.encodedPolyline)
-
-          const mapUrl = await serviceRequest.generateStaticMapUrl(estimate.calculateRide.origin, estimate.calculateRide.destination)
-
-          setMapUrl(mapUrl)
+          setMapUrl(estimate.routeResponse.urlMapStatic)
 
           setStep(StepTypeEnum.CONFIRM)
         }

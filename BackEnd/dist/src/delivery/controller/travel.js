@@ -32,8 +32,9 @@ exports.CreateTravelController = CreateTravelController;
 class ListTravelsByCustomerIDController {
     listTravelsByCustomerID(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { customerID, driverID } = req.body;
-            const ucReq = new travel_2.ListTravelsByCustomerIDUseCaseRequest(customerID, driverID);
+            const { customerID } = req.params;
+            const { driverID } = req.query;
+            const ucReq = new travel_2.ListTravelsByCustomerIDUseCaseRequest(customerID, parseInt(driverID));
             const validate = new travel_4.ListTravelsByCustomerIDUseCaseValidate();
             const repository = new travel_3.ListTravelsByCustomerIDUseCaseRepository();
             const usecase = new travel_1.ListTravelsByCustomerIDUseCase(validate, repository);

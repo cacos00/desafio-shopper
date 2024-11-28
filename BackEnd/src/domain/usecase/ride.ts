@@ -1,4 +1,4 @@
-import { getCoordinates } from "../../infrastructure/internal/api/geocoding"
+import { generateStaticMapUrl, getCoordinates } from "../../infrastructure/internal/api/geocoding"
 import { formatMetersByKm } from "../common/parse"
 import { InternalServerError, PreconditionError, TAG_INTERNAL_SERVER_ERROR, TAG_PRE_CONDITION_ERROR } from "../entity/error"
 import { OptionsEntity, RouteCalculationResponseEntity } from "../entity/ride"
@@ -29,6 +29,8 @@ class CalculateRideEstimateUseCase {
                 let originCoodinates = await getCoordinates(origin)
                 let destinationCoodinates = await getCoordinates(destination)
 
+                const urlMapStatic = await generateStaticMapUrl(originCoodinates, destinationCoodinates)
+
                 const route = await this.repository.routeCalculation(origin, destination)
 
                 let responseRoute = null
@@ -53,8 +55,6 @@ class CalculateRideEstimateUseCase {
                     for (let index = 0; index < drivers.length; index++) {
                         const drive = drivers[index]
 
-                        console.log(drive)
-
                         const review = {
                             rating: drive.rating,
                             comment: drive.comment
@@ -76,7 +76,9 @@ class CalculateRideEstimateUseCase {
                     }
                 }
 
-                return new CalculateRideEstimateUseCaseResponse(responseRoute, options, route, null)
+                const responseRouteCalculation = { ...route, urlMapStatic }
+
+                return new CalculateRideEstimateUseCaseResponse(responseRoute, options, responseRouteCalculation, null)
             }
 
         } catch (error: any) {

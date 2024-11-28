@@ -7,10 +7,17 @@ class ListDriversByKmWrapper {
     }
     getSQL() {
         return `
-      SELECT *
-      FROM public.drivers as dr
-      WHERE dr.km <= $1
-      `;
+            SELECT 
+              id as "ID", 
+              name, 
+              description, 
+              vehicle, 
+              comment, 
+              rating, 
+              km
+            FROM public.drivers as dr
+            WHERE dr.km <= $1
+        `;
     }
     getParameters() {
         return [

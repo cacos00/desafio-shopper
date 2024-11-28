@@ -10,9 +10,10 @@ class CalculateRideEstimateUseCaseRequest {
 }
 exports.CalculateRideEstimateUseCaseRequest = CalculateRideEstimateUseCaseRequest;
 class CalculateRideEstimateUseCaseResponse {
-    constructor(calculateRide, options, error) {
+    constructor(calculateRide, options, routeResponse, error) {
         this.calculateRide = calculateRide;
         this.options = options;
+        this.routeResponse = routeResponse;
         this.error = error;
     }
 }

@@ -16,6 +16,7 @@ exports.computeRoutes = computeRoutes;
 const axios_1 = __importDefault(require("axios"));
 function computeRoutes(origin, destination) {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         const apiKey = process.env.GOOGLE_API_KEY;
         const url = "https://routes.googleapis.com/directions/v2:computeRoutes";
         const data = {
@@ -32,9 +33,17 @@ function computeRoutes(origin, destination) {
             "X-Goog-Api-Key": apiKey,
             "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline"
         };
-        const response = yield axios_1.default.post(url, data, { headers });
-        const route = response.data.routes[0];
-        console.log('route: ', route);
-        return route;
+        try {
+            const response = yield axios_1.default.post(url, data, { headers });
+            if (!response.data.routes || response.data.routes.length === 0) {
+                throw new Error("Nenhuma rota encontrada para os endereços fornecidos.");
+            }
+            const route = response.data.routes[0];
+            return route;
+        }
+        catch (error) {
+            console.error("Erro ao calcular rotas:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+            throw new Error("Erro ao calcular a rota. Verifique os endereços e tente novamente.");
+        }
     });
 }

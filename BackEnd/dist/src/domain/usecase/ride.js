@@ -23,15 +23,16 @@ class CalculateRideEstimateUseCase {
     calculateRideEstimate(req) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const messageError = this.validate.calculateRideEstimate(req);
+                const messageError = yield this.validate.calculateRideEstimate(req);
                 if (messageError) {
                     console.log(`${error_1.TAG_PRE_CONDITION_ERROR} ${messageError}`);
-                    return new ride_2.CalculateRideEstimateUseCaseResponse(null, null, new error_1.PreconditionError(messageError));
+                    return new ride_2.CalculateRideEstimateUseCaseResponse(null, null, null, new error_1.PreconditionError(messageError));
                 }
                 else {
                     const { customerID, origin, destination } = req;
                     let originCoodinates = yield (0, geocoding_1.getCoordinates)(origin);
                     let destinationCoodinates = yield (0, geocoding_1.getCoordinates)(destination);
+                    const urlMapStatic = yield (0, geocoding_1.generateStaticMapUrl)(originCoodinates, destinationCoodinates);
                     const route = yield this.repository.routeCalculation(origin, destination);
                     let responseRoute = null;
                     if (route) {
@@ -52,12 +53,13 @@ class CalculateRideEstimateUseCase {
                             options.push(option);
                         }
                     }
-                    return new ride_2.CalculateRideEstimateUseCaseResponse(responseRoute, options, null);
+                    const responseRouteCalculation = Object.assign(Object.assign({}, route), { urlMapStatic });
+                    return new ride_2.CalculateRideEstimateUseCaseResponse(responseRoute, options, responseRouteCalculation, null);
                 }
             }
             catch (error) {
                 console.log(error_1.TAG_INTERNAL_SERVER_ERROR, error);
-                return new ride_2.CalculateRideEstimateUseCaseResponse(null, null, new error_1.InternalServerError(error.message));
+                return new ride_2.CalculateRideEstimateUseCaseResponse(null, null, null, new error_1.InternalServerError(error.message));
             }
         });
     }

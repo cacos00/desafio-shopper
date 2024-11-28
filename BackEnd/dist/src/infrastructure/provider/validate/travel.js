@@ -24,6 +24,9 @@ class CreateTravelUseCaseValidate {
             if ((0, validate_1.checkStringEmpty)(req.origin)) {
                 return 'É necessário informar o ponto de partida da viagem.';
             }
+            if (req.origin.trim().toLowerCase() === req.destination.trim().toLowerCase()) {
+                return 'Os endereços de origem e destino não podem ser iguais.';
+            }
             if ((0, validate_1.checkStringEmpty)(req.driver.name)) {
                 return 'É necessário informar o nome do motorista';
             }
@@ -48,10 +51,11 @@ class ListTravelsByCustomerIDUseCaseValidate {
             if ((0, validate_1.checkStringEmpty)(req.customerID)) {
                 return 'É necessário informar o identificador do usuário';
             }
-            // if (req.driverID) {
-            //     const driver = await getDriverByID(req.driverID)
-            //     if (!driver) return 'Não existe motorista para o identificador informado'
-            // }
+            if (req.driverID) {
+                const driver = yield (0, drive_1.getDriverByID)(req.driverID);
+                if (!driver)
+                    return 'Não existe motorista para o identificador informado';
+            }
             return null;
         });
     }

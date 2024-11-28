@@ -10,7 +10,6 @@ function EstimateRideView(props: EstimateRideViewModalProps) {
     const [customerID, setCustomerID] = useState<string>('')
     const [origin, setOrigin] = useState<string>('')
     const [destination, setDestination] = useState<string>('')
-    const [error, setError] = useState('')
 
     async function handleOnClickRideEstimate(e: React.FormEvent<HTMLButtonElement>): Promise<void> {
         e.preventDefault()

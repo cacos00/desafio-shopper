@@ -26,7 +26,7 @@ function listDriversByKm(km) {
 function getDriverByID(ID) {
     return __awaiter(this, void 0, void 0, function* () {
         const repository = yield connection_1.Connection.getRepository(drive_1.DriverModel);
-        const result = yield repository.findOneBy({ ID });
+        const result = yield repository.findOne({ where: { ID } });
         return result ? (0, drive_2.toDriverEntity)(result) : null;
     });
 }
