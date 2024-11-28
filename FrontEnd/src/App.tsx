@@ -19,7 +19,6 @@ function App() {
   const [distanceMeters, setDistanceMeters] = useState<number>()
   const [duration, setDuration] = useState<number>()
   const [mapUrl, setMapUrl] = useState<string>('')
-  const [encodedPolyline, setEncodedPolyline] = useState<string>('')
   const [rides, setRides] = useState<RideType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>('')
@@ -58,7 +57,6 @@ function App() {
           setDrivers(estimate.options)
           setDistanceMeters(estimate.calculateRide.distanceMeters)
           setDuration(estimate.calculateRide.duration)
-          setEncodedPolyline(estimate.routeResponse.polyline.encodedPolyline)
           setMapUrl(estimate.routeResponse.urlMapStatic)
 
           setStep(StepTypeEnum.CONFIRM)
