@@ -1,7 +1,7 @@
 import axios from "axios"
 import { RideConfirmeRequestType, RideEstimateRequestType } from "../components/EstimateRide/EstimateRideViewType"
 
-const API_URL = "http://localhost:8080"
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080"
 class ServiceRequest {
     async rideEstimate(formData: RideEstimateRequestType): Promise<any> {
         const response = await axios.post(`${API_URL}/ride/estimate`, formData)
